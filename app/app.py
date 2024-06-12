@@ -12,7 +12,7 @@ app = Flask(__name__)
 api = Api(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///multi_tenant.db'
-app.config['JWT_SECRET_KEY'] = 'super-secret-key'  # Change this in production
+app.config['JWT_SECRET_KEY'] = 'super-secret-key'  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 app.config['SESSION_TYPE'] = 'SQLAlchemy'
