@@ -28,7 +28,7 @@ jwt = JWTManager(app)
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    new_user = User(username=data['username'], password=data['password'], tenant_id=data['tenant_id'])
+    new_user = User(username=data['username'], password=data['password'], landlord_id=data['landlord_id'])
     db.session.add(new_user)
     db.session.commit()
     return jsonify(message="User registered"), 201
@@ -38,7 +38,7 @@ def login():
     data = request.get_json()
     user = User.query.filter_by(username=data['username']).first()
     if user and user.password == data['password']:
-        access_token = create_access_token(identity={'username': user.username, 'tenant_id': user.tenant_id})
+        access_token = create_access_token(identity={'username': user.username, 'landlord_id': user.landlord_id})
         return jsonify(access_token=access_token), 200
     return jsonify(message="Invalid credentials"), 401
 

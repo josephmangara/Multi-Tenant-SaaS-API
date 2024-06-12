@@ -24,7 +24,7 @@ with app.app_context():
         user = User(
             username=fake.user_name(),
             password=fake.password(),
-            tenant_id=choice(landlords).id
+            landlord_id=choice(landlords).id
         )
         db.session.add(user)
     db.session.commit()
