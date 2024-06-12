@@ -24,7 +24,11 @@ db.init_app(app)
 jwt = JWTManager(app)
 
 
-# Registration and Login Endpoints
+@app.route("/")
+def home():
+    return {"Message": "Welcome to the multi-tenant SaaS API"}
+
+#  Registration and Login Endpoints
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -43,5 +47,4 @@ def login():
     return jsonify(message="Invalid credentials"), 401
 
 if __name__ == '__main__':
-    db.create_all()
     app.run(port=5555, debug=True)
