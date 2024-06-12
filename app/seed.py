@@ -1,25 +1,31 @@
 import faker
-from models import User, Tenant 
-from app import app, db
+from models import User, Landlord, db
+from app import app
+from random import choice 
 
 fake = faker.Faker()
 
 with app.app_context():
     User.query.delete()
-    Tenant.query.delete()
+    Landlord.query.delete()
 
+    db.session.commit()
+
+    # Landlord
+    landlords = []
+    for _ in range(2):
+        tenant = Landlord(name=fake.company())
+        db.session.add(tenant)
+        landlords.append(tenant)
     db.session.commit()
 
     # User 
-    names = []
-
-    fake_name = User(
-        username = fake.name(),
-        password = fake.password(),
-        tenant_id = fake.id()
-    )
-
-    db.session.add(fake_name)
-    names.append(fake_name)
-
+    for _ in range(2):
+        user = User(
+            username=fake.user_name(),
+            password=fake.password(),
+            tenant_id=choice(landlords).id
+        )
+        db.session.add(user)
     db.session.commit()
+
