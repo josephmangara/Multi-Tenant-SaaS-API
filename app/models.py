@@ -28,3 +28,6 @@ class Landlord(db.Model):
     updated_at = db.Column(db.DateTime(), onupdate=db.func.now())
 
     users = db.relationship('User', backref="landlords")
+
+class Location(db.Model):
+    __tablename__ = "locations"
