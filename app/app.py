@@ -8,6 +8,7 @@ from models import db, User, Landlord
 from flask_restful import Api, Resource
 
 
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -28,7 +29,7 @@ jwt = JWTManager(app)
 def home():
     return {"Message": "Welcome to the multi-tenant SaaS API"}
 
-#  Registration and Login Endpoints
+# Registration and Login Endpoints
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
