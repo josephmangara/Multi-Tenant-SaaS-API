@@ -34,3 +34,5 @@ class Location(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     address = db.Column(db.String)
+
+#  consider changing location to properties 
