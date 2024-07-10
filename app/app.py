@@ -87,9 +87,26 @@ def create_location():
     return jsonify(message="Location created"), 201
 
 
-@app.route('/locations', methods=['POST'])
-def locations():
-    pass
+@app.route('/locations', methods=['GET'])
+def get_locations():
+    locations = Location.query.all()
+    locations_list = [{"id": loc.id, "address": loc.address, "city": loc.city, "state": loc.state, "zip_code": loc.zip_code} for loc in locations]
+    return jsonify(locations=locations_list), 200
+
+# Landlords Endpoint
+@app.route('/landlords', methods=['POST'])
+def create_landlord():
+    data = request.get_json()
+    new_landlord = Landlord(name=data['name'])
+    db.session.add(new_landlord)
+    db.session.commit()
+    return jsonify(message="Landlord created"), 201
+
+@app.route('/landlords', methods=['GET'])
+def get_landlords():
+    landlords = Landlord.query.all()
+    landlords_list = [{"id": landlord.id, "name": landlord.name} for landlord in landlords]
+    return jsonify(landlords=landlords_list), 200
 
 @app.route('/landlords', methods=['POST'])
 def landlords():
