@@ -47,5 +47,9 @@ def login():
         return jsonify(access_token=access_token), 200
     return jsonify(message="Invalid credentials"), 401
 
+@app.route('/properties', methods=['POST'])
+def properties():
+    pass
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
