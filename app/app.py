@@ -47,9 +47,24 @@ def login():
         return jsonify(access_token=access_token), 200
     return jsonify(message="Invalid credentials"), 401
 
+# Properties Endpoint
 @app.route('/properties', methods=['POST'])
-def properties():
-    pass
+@jwt_required()
+def create_property():
+    data = request.get_json()
+    current_user = get_jwt_identity()
+    landlord_id = current_user['landlord_id']
+    
+    new_property = Property(
+        name=data['name'],
+        description=data.get('description', ''),
+        price=data['price'],
+        location_id=data['location_id'],
+        landlord_id=landlord_id
+    )
+    db.session.add(new_property)
+    db.session.commit()
+    return jsonify(message="Property created"), 201
 
 @app.route('/locations', methods=['POST'])
 def locations():
