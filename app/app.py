@@ -55,6 +55,9 @@ def properties():
 def locations():
     pass
 
+@app.route('/landlords', methods=['POST'])
+def landlords():
+    pass
 
 
 if __name__ == '__main__':
