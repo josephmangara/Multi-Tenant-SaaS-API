@@ -47,6 +47,11 @@ def login():
         return jsonify(access_token=access_token), 200
     return jsonify(message="Invalid credentials"), 401
 
+@app.route('/users', methods=['PATCH'])
+def patch_user():
+    pass
+
+
 # Properties Endpoint
 @app.route('/properties', methods=['POST'])
 @jwt_required()
@@ -72,6 +77,11 @@ def get_properties():
     properties_list = [{"id": prop.id, "name": prop.name, "description": prop.description, "price": prop.price, "location_id": prop.location_id, "landlord_id": prop.landlord_id} for prop in properties]
     return jsonify(properties=properties_list), 200
 
+@app.route('/properties/id', methods=['PATCH'])
+def patch_properties():
+    pass
+
+
 # Locations Endpoint
 @app.route('/locations', methods=['POST'])
 def create_location():
@@ -93,6 +103,11 @@ def get_locations():
     locations_list = [{"id": loc.id, "address": loc.address, "city": loc.city, "state": loc.state, "zip_code": loc.zip_code} for loc in locations]
     return jsonify(locations=locations_list), 200
 
+@app.route('/locations/id', methods=['PATCH'])
+def patch_locations():
+    pass
+
+
 # Landlords Endpoint
 @app.route('/landlords', methods=['POST'])
 def create_landlord():
@@ -108,8 +123,8 @@ def get_landlords():
     landlords_list = [{"id": landlord.id, "name": landlord.name} for landlord in landlords]
     return jsonify(landlords=landlords_list), 200
 
-@app.route('/landlords', methods=['POST'])
-def landlords():
+@app.route('/landlords/id', methods=['PATCH'])
+def patch_landlords():
     pass
 
 
