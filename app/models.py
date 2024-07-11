@@ -7,8 +7,9 @@ db = SQLAlchemy()
 bcrypt = Bcrypt() 
 
 
-# User and Tenant Models
-class User(db.Model):
+# User and lanlord Models
+# N.B Users are the tenants
+class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -19,7 +20,7 @@ class User(db.Model):
         
     landlord_id = db.Column(db.Integer, db.ForeignKey('landlords.id'))
 
-class Landlord(db.Model):
+class Landlord(db.Model, SerializerMixin):
     __tablename__ = "landlords"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +30,7 @@ class Landlord(db.Model):
 
     users = db.relationship('User', backref="landlords")
 
-class Property(db.Model):
+class Property(db.Model, SerializerMixin):
     __tablename__ = "properties"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -42,7 +43,7 @@ class Property(db.Model):
     location = db.relationship('Location', backref='properties')
     landlord = db.relationship('Landlord', backref='properties')
 
-class Location(db.Model):
+class Location(db.Model, SerializerMixin):
     __tablename__ = "locations"
 
     id = db.Column(db.Integer, primary_key=True)
