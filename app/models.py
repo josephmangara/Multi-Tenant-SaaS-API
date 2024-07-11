@@ -29,13 +29,6 @@ class Landlord(db.Model):
 
     users = db.relationship('User', backref="landlords")
 
-# class Location(db.Model):
-#     __tablename__ = "locations"
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     address = db.Column(db.String)
-
-#  consider changing location to properties 
 class Property(db.Model):
     __tablename__ = "properties"
 
@@ -55,7 +48,7 @@ class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     address = db.Column(db.String(200), nullable=False)
     city = db.Column(db.String(80), nullable=False)
-    state = db.Column(db.String(80), nullable=False)
+    town = db.Column(db.String(80), nullable=False)
     zip_code = db.Column(db.String(20), nullable=False)
 
     properties = db.relationship('Property', backref='locations')
