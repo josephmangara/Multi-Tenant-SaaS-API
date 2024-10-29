@@ -2,15 +2,17 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import validates
 from flask_bcrypt import Bcrypt 
 from sqlalchemy_serializer import SerializerMixin
+from datetime import datetime
 
 db = SQLAlchemy()
 bcrypt = Bcrypt() 
 
 
-# User and lanlord Models
+# User and landlord Models
 # N.B Users are the tenants
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
+    serialize_only = ('id', 'username', 'created_at', 'updated_at', 'landlord_id')
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -22,6 +24,7 @@ class User(db.Model, SerializerMixin):
 
 class Landlord(db.Model, SerializerMixin):
     __tablename__ = "landlords"
+    serialize_only = ('id', 'name', 'created_at', 'updated_at', 'users.id')
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
@@ -32,10 +35,11 @@ class Landlord(db.Model, SerializerMixin):
 
 class Property(db.Model, SerializerMixin):
     __tablename__ = "properties"
+    serialize_only = ('id', 'name', 'description', 'price', 'location_id', 'landlord_id')
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-    description = db.Column(db.String(200))
+    name = db.Column(db.String, nullable=False)
+    description = db.Column(db.String(2000))
     price = db.Column(db.Float, nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
     landlord_id = db.Column(db.Integer, db.ForeignKey('landlords.id'))
@@ -45,6 +49,7 @@ class Property(db.Model, SerializerMixin):
 
 class Location(db.Model, SerializerMixin):
     __tablename__ = "locations"
+    serialize_only = ('id', 'address', 'city', 'town', 'zip_code', 'properties.id')
 
     id = db.Column(db.Integer, primary_key=True)
     address = db.Column(db.String(200), nullable=False)
