@@ -1,2 +1,2 @@
 # Multi-Tenant-SaaS-API
-Develop an API for a multi-tenant Software as a Service (SaaS) application, supporting tenant isolation, subscription management, usage tracking, and billing. Include robust authentication and authorization mechanisms.
+This is an API for a multi-tenant Software as a Service (SaaS) application, supporting tenant registration, subscription management, usage tracking, and billing. It also includes authentication and authorization mechanisms.
