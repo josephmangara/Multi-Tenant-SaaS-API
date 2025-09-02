@@ -33,7 +33,13 @@ def home():
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    new_user = User(username=data['username'], password=data['password'], landlord_id=data['landlord_id'])
+
+    if User.query.filter_by(username=data['username']).first():
+        return jsonify(message="Username already exists"), 400
+
+    new_user = User(username=data['username'], landlord_id=data['landlord_id'])
+    new_user.set_password(data['password'])  
+
     db.session.add(new_user)
     db.session.commit()
     return jsonify(message="User registered"), 201
