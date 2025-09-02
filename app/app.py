@@ -48,38 +48,34 @@ def register():
 def login():
     data = request.get_json()
     user = User.query.filter_by(username=data['username']).first()
-    if user and user.password == data['password']:
+    if user and user.check_password(data['password']):
         access_token = create_access_token(identity={'username': user.username, 'landlord_id': user.landlord_id})
         return jsonify(access_token=access_token), 200
     return jsonify(message="Invalid credentials"), 401
 
 @app.route('/users/<int:user_id>', methods=['PATCH'])
 @jwt_required()
-def patch_user():
+def patch_user(user_id):
     data = request.get_json()
     user = User.query.get(user_id)
 
     if not user:
         return jsonify(message="User not found"), 404
 
-    # current_user = get_jwt_identity()
-    # if current_user['landlord_id'] != user.landlord_id:
-    #     return jsonify(message="Unauthorized action"), 403
+    current_user = get_jwt_identity()
+    if current_user['landlord_id'] != user.landlord_id:
+        return jsonify(message="Unauthorized action"), 403
 
     if 'username' in data:
         user.username = data['username']
     if 'password' in data:
-        user.password = data['password'] 
+        user.set_password(data['password'])  
     if 'landlord_id' in data:
         user.landlord_id = data['landlord_id']
 
     db.session.commit()
-    return jsonify(
-        id=user.id,
-        username=user.username,
-        landlord_id=user.landlord_id,
-        message="User updated successfully"
-    ), 200
+    return jsonify(user.serialize(), message="User updated successfully"), 200
+
 
 
 # Properties Endpoint
