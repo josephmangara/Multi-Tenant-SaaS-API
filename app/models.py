@@ -9,7 +9,6 @@ bcrypt = Bcrypt()
 
 
 # User and landlord Models
-# N.B Users are the tenants
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
     serialize_only = ('id', 'username', 'created_at', 'updated_at', 'landlord_id')
@@ -21,6 +20,12 @@ class User(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime(), onupdate=db.func.now())
         
     landlord_id = db.Column(db.Integer, db.ForeignKey('landlords.id'))
+
+    def set_password(self, raw_password):
+        self.password = bcrypt.generate_password_hash(raw_password).decode('utf-8')
+
+    def check_password(self, raw_password):
+        return bcrypt.check_password_hash(self.password, raw_password)
 
 class Landlord(db.Model, SerializerMixin):
     __tablename__ = "landlords"
