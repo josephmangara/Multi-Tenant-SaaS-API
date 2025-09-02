@@ -47,9 +47,33 @@ def login():
         return jsonify(access_token=access_token), 200
     return jsonify(message="Invalid credentials"), 401
 
-@app.route('/users', methods=['PATCH'])
+@app.route('/users/<int:user_id>', methods=['PATCH'])
+@jwt_required()
 def patch_user():
-    pass
+    data = request.get_json()
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify(message="User not found"), 404
+
+    # current_user = get_jwt_identity()
+    # if current_user['landlord_id'] != user.landlord_id:
+    #     return jsonify(message="Unauthorized action"), 403
+
+    if 'username' in data:
+        user.username = data['username']
+    if 'password' in data:
+        user.password = data['password'] 
+    if 'landlord_id' in data:
+        user.landlord_id = data['landlord_id']
+
+    db.session.commit()
+    return jsonify(
+        id=user.id,
+        username=user.username,
+        landlord_id=user.landlord_id,
+        message="User updated successfully"
+    ), 200
 
 
 # Properties Endpoint
